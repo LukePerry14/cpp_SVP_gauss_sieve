@@ -5,18 +5,15 @@
 #include <algorithm>
 #include <vector>
 #include <cctype>
+#include <random>
+#include <fstream>
 
 #include "vectors.h"
+#include "Gauss.h"
 
 using namespace std;
 
-vector<vector<float>> processArgs(int argc, char** argv){
-    int vecnum = sqrt(argc-1);
-
-    if (vecnum * vecnum != argc-1) {
-        cerr << "Invalid Argument Size" << endl;
-        exit(EXIT_FAILURE);
-    }
+vector<vector<float>> processArgs(int argc, char** argv, int vecnum){
 
     vector<vector<float>> t_basis;
     for (int vec = 1; vec < argc; vec += vecnum) {
@@ -44,37 +41,29 @@ vector<vector<float>> processArgs(int argc, char** argv){
     }
     return t_basis;
 }
+
 int main(int argc, char* argv[]) {
-    vector<vector<float>> t_basis = processArgs(argc, argv);
-    Matrix basis(t_basis);
+    int vecnum = sqrt(argc-1);
 
-    basis.printMatrix();
-    //GaussSieve
+    if (vecnum * vecnum != argc-1) {
+        cerr << "Invalid Argument Size" << endl;
+        exit(EXIT_FAILURE);
+    }
+    
+    vector<vector<float>> basis = processArgs(argc, argv, vecnum);
+
+    float smallest = GaussSieve(basis, vecnum);
+
+    cout << smallest << endl;
+
+    ofstream outputFile("result.txt");
+
+    if(outputFile.is_open()){
+        outputFile << smallest << endl;
+        outputFile.close();
+    } else {
+        cerr << "Error writing result to file" << endl;
+    }
+
     return 0;
-}
-//L is list of vectors found so far
-// S is optional queue jumping array
-//K is collision counter
-
-int collision_estimate(int n){
-    if(n < 4){
-        return 1;
-    } else{
-        return round(n/10);
-    }
-}
-vector<float> GaussReduce(vector<float> p, vector<vector<float>> L, vector<vector<float>>){
-    reduceable = true;
-    while(reducable){
-        reducable = false;
-        for(const auto& vec : L){
-            if norm(vec_sub(p, vec)) < norm(p){
-                reducable = true;
-                p = vec_sub(p, vec);
-            }
-        }
-    }
-    //opportunity to implement S optimisation
-
-    return p;
 }
