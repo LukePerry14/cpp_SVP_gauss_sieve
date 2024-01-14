@@ -21,3 +21,11 @@ vector<float> vec_sub(vector<float> vec1, vector<float> vec2){
     }
     return retvec;
 }
+
+vector<float> vec_add(vector<float> vec1, vector<float> vec2){
+    vector<float> retvec;
+    for(auto pos=0u; pos < vec1.size(); pos++){
+        retvec.push_back(vec1[pos] + vec2[pos]);
+    }
+    return retvec;
+}

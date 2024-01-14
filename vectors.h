@@ -11,5 +11,6 @@ using namespace std;
 
 float norm(vector<float> vec);
 vector<float> vec_sub(vector<float> vec1, vector<float> vec2);
+vector<float> vec_add(vector<float> vec1, vector<float> vec2);
 
 #endif

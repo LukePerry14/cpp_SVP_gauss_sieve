@@ -24,6 +24,7 @@ float GaussSieve(vector<vector<float>> basis, int vecnum){
         if(norm(new_vec) == 0){
             collision_counter += 1;
         } else {
+            L = L_reduce(L, new_vec);
             L.push_back(new_vec);
         }
     }
@@ -35,6 +36,18 @@ float GaussSieve(vector<vector<float>> basis, int vecnum){
 // S is optional queue jumping array
 //K is collision counter
 
+vector<vector<float>> L_reduce(vector<vector<float>> L, vector<float> vec){
+    for (auto x=0u; x<L.size(); x++){
+        if(norm(vec_sub(L[x], vec)) < norm(L[x])){
+            L[x] = vec_sub(L[x], vec);
+        } else if (norm(vec_sub(L[x], vec)) < norm(L[x])){
+            L[x] = vec_add(L[x], vec);
+        }
+    }
+
+    return L;
+}
+
 vector<float> GaussReduce(vector<float> p, vector<vector<float>> L){
     bool reduceable = true;
     while(reduceable){
@@ -43,6 +56,9 @@ vector<float> GaussReduce(vector<float> p, vector<vector<float>> L){
             if (norm(vec_sub(p, vec)) < norm(p)){
                 reduceable = true;
                 p = vec_sub(p, vec);
+            } else if (norm(vec_add(p, vec)) < norm(p)) {
+                reduceable = true;
+                p = vec_add(p, vec);
             }
         }
     }
@@ -63,11 +79,7 @@ float shortest_vec(vector<vector<float>> L){
 }
 
 int collision_estimate(int n){
-    if(n < 4){
-        return 1;
-    } else{
-        return round(n/10);
-    }
+    return round(n/10) + 200;
 }
 
 vector<float> randomSample(vector<vector<float>> basis, int size){

@@ -13,6 +13,8 @@ float GaussSieve(vector<vector<float>> basis, int vecnum);
 
 vector<float> GaussReduce(vector<float> p, vector<vector<float>> L);
 
+vector<vector<float>> L_reduce(vector<vector<float>> L, vector<float> vec);
+
 float shortest_vec(vector<vector<float>> L);
 
 vector<float> randomSample(vector<vector<float>> basis, int size);
